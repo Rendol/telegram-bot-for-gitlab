@@ -9,7 +9,6 @@ export class GitlabService {
     this.webhookUrl = webhookUrl;
     this.host = opts.host;
     this.tokens = opts.tokens;
-    this.gitlab = new Gitlab(opts);
   }
 
   get(projectUrl) {

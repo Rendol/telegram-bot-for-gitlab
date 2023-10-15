@@ -257,8 +257,8 @@ export class TelegramService {
     const source = `[${attrs.source_branch}](${attrs.source.web_url}/-/commits/${attrs.source_branch})`;
     const target = `[${attrs.target_branch}](${attrs.target.web_url}/-/commits/${attrs.target_branch})`;
 
-    const assigneeUsers = event.assignees.map(x => x.name);
-    const reviewerUsers = event.reviewers.map(x => x.name);
+    const assigneeUsers = (event.assignees || []).map(x => x.name);
+    const reviewerUsers = (event.reviewers || []).map(x => x.name);
 
     const assignees = `Ответственный: ${
       assigneeUsers.length > 0

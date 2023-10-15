@@ -1,0 +1,16 @@
+{
+  "server": {
+    "port": 3000,
+    "root": "/api",
+    "host": "https://this.service.SELFHOST/"
+  },
+  "gitlab": {
+    "host": "http://gitlab.SELFHOST",
+    "serverEndpoint": "/webhook/gitlab",
+    "token": "PRIVATE_TOKEN_FROM_GITLAB"
+  },
+  "bot": {
+    "serverEndpoint": "/webhook/telegram",
+    "token": "TELEGRAM_BOT_TOKEN_FROM_@BotFather"
+  }
+}

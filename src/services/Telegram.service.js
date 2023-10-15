@@ -257,11 +257,12 @@ export class TelegramService {
     const source = `[${attrs.source_branch}](${attrs.source.web_url}/-/commits/${attrs.source_branch})`;
     const target = `[${attrs.target_branch}](${attrs.target.web_url}/-/commits/${attrs.target_branch})`;
 
+    const {gitlab} = this.gitlab.get(projectUrl);
     const authorUser = attrs.author_id
-      ? await this.gitlab.gitlab.Users.show(attrs.author_id)
+      ? await gitlab.Users.show(attrs.author_id)
       : null;
     const assigneeUser = attrs.assignee_id
-      ? await this.gitlab.gitlab.Users.show(attrs.assignee_id)
+      ? await gitlab.Users.show(attrs.assignee_id)
       : null;
 
     const author = `Ответственный: ${

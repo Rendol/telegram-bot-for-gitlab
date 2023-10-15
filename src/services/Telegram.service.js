@@ -49,7 +49,7 @@ export class TelegramService {
       const projectUrl = match[1];
       try {
         storage.checkAccess(msg.from.id);
-        const webhook = await gitlab.addWebhook(projectUrl);
+        const webhook = await this.gitlab.addWebhook(projectUrl);
         storage.addProject(msg.from.id, msg.chat.id, projectUrl);
         await this.botMessage(
           msg.chat.id,
@@ -81,7 +81,7 @@ export class TelegramService {
           projectUrl,
         );
         if (chatCountByProjectUrl === 0) {
-          await gitlab.delWebhook(projectUrl);
+          await this.gitlab.delWebhook(projectUrl);
         }
         await this.botMessage(
           msg.chat.id,
@@ -257,19 +257,18 @@ export class TelegramService {
     const source = `[${attrs.source_branch}](${attrs.source.web_url}/-/commits/${attrs.source_branch})`;
     const target = `[${attrs.target_branch}](${attrs.target.web_url}/-/commits/${attrs.target_branch})`;
 
-    const {gitlab} = this.gitlab.get(projectUrl);
-    const authorUser = attrs.author_id
-      ? await gitlab.Users.show(attrs.author_id)
-      : null;
-    const assigneeUser = attrs.assignee_id
-      ? await gitlab.Users.show(attrs.assignee_id)
-      : null;
+    const assigneeUsers = event.assignees.map(x => x.name);
+    const reviewerUsers = event.reviewers.map(x => x.name);
 
-    const author = `Ответственный: ${
-      authorUser ? `\`${authorUser.name}\`` : '*не назначен*'
+    const assignees = `Ответственный: ${
+      assigneeUsers.length > 0
+        ? `\`${assigneeUsers.join('`, `')}\``
+        : '*не назначен*'
     }`;
-    const assignee = `Ревьювер: ${
-      assigneeUser ? `\`${assigneeUser.name}\`` : '*не назначен*'
+    const reviewers = `Ревьювер: ${
+      reviewerUsers.length > 0
+        ? `\`${reviewerUsers.join('`, `')}\``
+        : '*не назначен*'
     }`;
     const title = `[${attrs.title}](${attrs.url})`;
 
@@ -280,8 +279,8 @@ export class TelegramService {
           `${project} запрос на слияние: *${attrs.state}*`,
           `${source} -> ${target}`,
           ``,
-          author,
-          assignee,
+          assignees,
+          reviewers,
           ``,
           title,
         );

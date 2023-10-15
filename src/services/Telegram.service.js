@@ -17,10 +17,10 @@ export class TelegramService {
   constructor(token, urlWebHook, gitlab, storage) {
     this.gitlab = gitlab;
     this.storage = storage;
-    this.bot = new TelegramBot(
-      token,
-      urlWebHook ? {webHook: urlWebHook} : {polling: true},
-    );
+    this.bot = new TelegramBot(token, urlWebHook ? {} : {polling: true});
+    if (urlWebHook) {
+      this.bot.setWebHook(urlWebHook).catch(console.error);
+    }
 
     this.bot.onText(/^\/start$/, async (msg, match) => {
       if (!this.storage.ownerUserId) {

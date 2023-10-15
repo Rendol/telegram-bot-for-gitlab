@@ -7,7 +7,9 @@
   "gitlab": {
     "host": "http://gitlab.SELFHOST",
     "serverEndpoint": "/webhook/gitlab",
-    "token": "PRIVATE_TOKEN_FROM_GITLAB"
+    "tokens": {
+      "YOUR_GROUP": "PRIVATE_TOKEN_FROM_GITLAB_GROUP"
+    }
   },
   "bot": {
     "serverEndpoint": "/webhook/telegram",

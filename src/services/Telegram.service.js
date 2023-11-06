@@ -222,6 +222,9 @@ export class TelegramService {
    * @param event {gitlab.PushEvent}
    */
   async onEventPush(event) {
+    if (!event.commits) {
+      return;
+    }
     const commits = event.commits
       .map(
         x =>
